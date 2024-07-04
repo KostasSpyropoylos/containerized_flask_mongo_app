@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Appointment</title>
+  </head>
+  <body>
+    <p><a href="{{ url_for('home') }}">Back to Home</a></p>
+    {%if len > 0 :%}
+    <table style="margin-left: 20px">
+      <!-- Table headers -->
+      <th>
+        <tr style="color: green">
+          <td>No</td>
+          <td>Date</td>
+          <td>Patient Name</td>
+          <td>Reason</td>
+        </tr>
+      </th>
+
+      <!-- For loop logic of jinja template -->
+      {%for i in range(0, len)%}
+
+      <!-- table rows -->
+      <tr>
+        <td>{{i}}</td>
+        <td>{{lst[i]['appointment_date'] }}</td>
+        <td>{{lst[i]['patient_name']}}</td>
+        <td>{{lst[i]['reason_for_visit']}}</td>
+
+        {%endfor%}
+      </tr>
+    </table>
+    {%elif len == 0 %}
+    <p>No appointments found</p>
+
+    
+    {%endif%} {%if accessLevel=="patient"%}
+    <h2>Book</h2>
+    <form method="post" action="{{ url_for('book_appointment') }}">
+      <p>Date of visit: <input type="date" name="date" value="2024-07-01" required/></p>
+      <label for="specialization">Doctors Specialization:</label>
+        <select id="time" name="specialization" required>
+            {% for spec in specialization %}
+              <option value="{{spec}}">{{ spec }}</option>
+              {% endfor %}
+        </select>
+      <p>Reason of Visit: <input type="text" name="reason_of_visit" required/></p>
+      <label for="time">Time:</label>
+        <select id="time" name="time" required>
+            <option value="09:00">09:00</option>
+            <option value="10:00">10:00</option>
+            <option value="11:00">11:00</option>
+            <option value="12:00">12:00</option>
+            <option value="13:00">13:00</option>
+            <option value="14:00">14:00</option>
+            <option value="15:00">15:00</option>
+            <option value="16:00">16:00</option>
+        </select>
+      <p><input type="submit" value="Login" /></p>
+    </form>
+    {%endif%}
+  </body>
+</html>
