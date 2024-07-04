@@ -13,6 +13,7 @@
         <tr style="color: green">
           <td>No</td>
           <td>Date</td>
+          <td>Time</td>
           <td>Patient Name</td>
           <td>Reason</td>
         </tr>
@@ -25,9 +26,10 @@
       <tr>
         <td>{{i}}</td>
         <td>{{lst[i]['appointment_date'] }}</td>
+        <td>{{lst[i]['appointment_time']}}</td>
         <td>{{lst[i]['patient_name']}}</td>
-        <td>{{lst[i]['reason_for_visit']}}</td>
-
+        <td>{{lst[i]['reason_of_visit']}}</td>
+        
         {%endfor%}
       </tr>
     </table>

@@ -200,10 +200,10 @@ def book_appointment():
     # check it there are appointments for the user
     appointments = appointment_collection.find({"patient_id": id})
     lst = list(appointments)
-    
+
     # Get the data and the status code
-    response,status = getAllSpecializations()
-    if(status == 200):
+    response, status = getAllSpecializations()
+    if status == 200:
         specializations = response.json
     else:
         specializations = []
@@ -212,10 +212,36 @@ def book_appointment():
         specialization = request.form["specialization"]
         reason_of_visit = request.form["reason_of_visit"]
         time = request.form["time"]
-        
-        
 
-     
+        doctor = doctor_collection.find_one({"specialization": specialization.lower()})
+        if doctor:
+            doc_id = str(doctor["_id"])
+            status, apps = getAvailableDate(date, time)
+            if status == 200:
+
+                # Insert the appointment data into the MongoDB collection
+                result = appointment_collection.insert_one(
+                    {
+                        "appointment_date": date,
+                        "appointment_time": time,
+                        "reason_of_visit": reason_of_visit,
+                        "patient_id": str(id),
+                        "patient_name": username,
+                        "doctor_id": doctor["_id"],
+                    },
+                )
+
+                return (
+                    jsonify(
+                        {
+                            "message": "Appointment created successfully",
+                            "appointment_id": str(result.inserted_id),
+                        }
+                    ),
+                    201,
+                )
+            else:
+                return jsonify({"message": "Appointment slot not available"}), 409
     return render_template(
         "appointments.html",
         username=username,
@@ -224,6 +250,20 @@ def book_appointment():
         accessLevel=accessLevel,
         specialization=specializations,
     )
+
+
+def getAvailableDate(date, time):
+    available_apps = appointment_collection.find_one(
+        {"$and": [{"appointment_time": time}, {"appointment_date": date}]}
+    )
+    
+    # if exists get status 400 and the appointment
+    if available_apps:
+        available_apps["_id"] = str(available_apps["_id"])
+        return 400, jsonify(available_apps)
+
+    # return ok and available appointments
+    return 200, jsonify(available_apps)
 
 
 # Helper methods
@@ -261,21 +301,30 @@ def getAllSpecializations():
         )
 
 
-# Returns list of doctors with certain specialization
-@app.route("/doctors/<specialization>", methods=["GET"])
-def getDoctorsBySpecialization(specialization):
+@app.route("/doctor/<id>", methods=["GET"])
+def getDoctorById(id):
 
     # Ανάκτηση των ραντεβού με το συγκεκριμένο doctor_id
-    doctors = doctor_collection.find({"specialization": specialization.lower()})
+    doctor = doctor_collection.find_one({"_id": ObjectId(id)})
 
-    # Μετατροπή των εγγράφων σε λίστα από λεξικά
-    doctor_list = []
-    for doc in doctors:
-        doc["_id"] = str(doc["_id"])  # Μετατροπή του ObjectId σε string
-        # Μετατροπή του ObjectId σε string αν υπάρχει και αυτό ως ObjectId
-        doctor_list.append(doc)
-    if len(doctor_list) > 0:
-        return jsonify(doctor_list), 200
+    doctor["_id"] = str(doctor["_id"])  # Μετατροπή του ObjectId σε string
+    if doctor:
+        return jsonify(doctor), 200
+    else:
+        return (
+            jsonify({"message": "No doctor found with provided id"}),
+            404,
+        )
+
+
+# Returns list of doctors with certain specialization
+@app.route("/doctors/<specialization>", methods=["GET"])
+def getDoctorBySpecialization(specialization):
+    doctors = doctor_collection.find_one({"specialization": specialization.lower()})
+    doctors["_id"] = str(doctors["_id"])
+
+    if doctors:
+        return jsonify(doctors), 200
     else:
         return (
             jsonify({"message": "No doctor found with provided specialization"}),
