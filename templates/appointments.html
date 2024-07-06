@@ -3,8 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <title>Appointment</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
   </head>
   <body>
+    {%if accessLevel=="doctor"%}
     <p><a href="{{ url_for('home') }}">Back to Home</a></p>
     {%if len > 0 :%}
     <table style="margin-left: 20px">
@@ -16,6 +23,8 @@
           <td>Time</td>
           <td>Patient Name</td>
           <td>Reason</td>
+          <td>Doctor's LastName</td>
+          <td>Doctor's Expertise</td>
         </tr>
       </th>
 
@@ -29,38 +38,153 @@
         <td>{{lst[i]['appointment_time']}}</td>
         <td>{{lst[i]['patient_name']}}</td>
         <td>{{lst[i]['reason_of_visit']}}</td>
-        
+        <td>{{lst[i]['doctor_last_name']}}</td>
+        <td>{{lst[i]['specialization']}}</td>
+
         {%endfor%}
       </tr>
     </table>
     {%elif len == 0 %}
     <p>No appointments found</p>
+    {%endif%} {%endif%} 
 
+    {%if accessLevel=="patient"%}
     
-    {%endif%} {%if accessLevel=="patient"%}
-    <h2>Book</h2>
-    <form method="post" action="{{ url_for('book_appointment') }}">
-      <p>Date of visit: <input type="date" name="date" value="2024-07-01" required/></p>
-      <label for="specialization">Doctors Specialization:</label>
-        <select id="time" name="specialization" required>
-            {% for spec in specialization %}
-              <option value="{{spec}}">{{ spec }}</option>
-              {% endfor %}
-        </select>
-      <p>Reason of Visit: <input type="text" name="reason_of_visit" required/></p>
-      <label for="time">Time:</label>
-        <select id="time" name="time" required>
-            <option value="09:00">09:00</option>
-            <option value="10:00">10:00</option>
-            <option value="11:00">11:00</option>
-            <option value="12:00">12:00</option>
-            <option value="13:00">13:00</option>
-            <option value="14:00">14:00</option>
-            <option value="15:00">15:00</option>
-            <option value="16:00">16:00</option>
-        </select>
-      <p><input type="submit" value="Login" /></p>
-    </form>
+    
+    
+      <div class="container " style="height:100%">
+          <div class="row  vh-100 align-items-center" >
+            <div class="col-3">
+              <h2>Book</h2>
+              <form method="post" action="{{ url_for('book_appointment') }}">
+                <p>
+                  Date of visit:
+                  <input type="date" name="date" value="2024-07-01" required />
+                </p>
+                <label for="specialization">Doctors Specialization:</label>
+                <select id="time" name="specialization" required>
+                  {% for spec in specialization %}
+                  <option value="{{spec}}">{{ spec }}</option>
+                  {% endfor %}
+                </select>
+                <p>
+                  Reason of Visit: <input type="text" name="reason_of_visit" required />
+                </p>
+                <label for="time">Time:</label>
+                <select id="time" name="time" required>
+                  <option value="09:00">09:00</option>
+                  <option value="10:00">10:00</option>
+                  <option value="11:00">11:00</option>
+                  <option value="12:00">12:00</option>
+                  <option value="13:00">13:00</option>
+                  <option value="14:00">14:00</option>
+                  <option value="15:00">15:00</option>
+                  <option value="16:00">16:00</option>
+                </select>
+                <p><input type="submit" name="book" value="Book" /></p>
+              </form>
+            </div>
+            {%if len > 0 :%}
+            <div class="col-9">
+              <table class="table table-striped">
+                <!-- Table headers -->
+                <th>
+                  <tr style="color: green">
+                    <th>No</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Patient Name</th>
+                    <th>Reason</th>
+                    <th>Doctor's LastName</th>
+                    <th>Doctor's Expertise</th>
+                  </tr>
+                </th>
+
+                <!-- For loop logic of jinja template -->
+                {%for i in range(0, len)%}
+
+                <!-- table rows -->
+                <tr>
+                  <td class="d-none">{{lst[i]["_id"]}}</td>
+                  
+                  <td>{{i+1}}</td>
+                  <td>{{lst[i]['appointment_date'] }}</td>
+                  <td>{{lst[i]['appointment_time']}}</td>
+                  <td>{{lst[i]['patient_name']}}</td>
+                  <td>{{lst[i]['reason_of_visit']}}</td>
+                  <td>{{lst[i]['doctor_last_name']}}</td>
+                  <td>{{lst[i]['specialization']}}</td>
+                  <td>
+                    <form action="{{ url_for('book_appointment') }}" method="post" style="display: inline">
+                      <input type="hidden" name="remove_row" value="{{ lst[i]['_id'] }}" />
+                      <input
+                        name="cancel" value="Cancel"
+                        type="submit"
+                        class="btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal"
+                      >
+                      </button>
+                    </form>
+                  </td>
+                  <td>
+                    <form class=".show-details-form" action="{{ url_for('book_appointment') }}" method="post" style="display: inline">
+                      <input type="hidden" name="row_id" value="{{ lst[i]['_id'] }}" />
+                      <input
+                        name="show_details" value="Show More"
+                        type="submit"
+                        class="btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal"
+                      >
+                      </button>
+                    </form>
+                  </td>
+
+                  {%endfor%}
+                </tr>
+              </table>
+            </div>
+            {%endif%} 
+        </div>
+      </div>
+    
+    {%if appointment_data %}
+    
+    <table style="margin-left: 20px">
+      <!-- Table headers -->
+      <th>
+        <tr style="color: green">
+          <td>No</td>
+          <td>Date</td>
+          <td>Time</td>
+          <td>Patient Name</td>
+          <td>Reason</td>
+          <td>Doctor's LastName</td>
+          <td>Doctor's Expertise</td>
+        </tr>
+      </th>
+
+      <!-- table rows -->
+      <tr>
+        <td>{{appointment['appointment_date'] }}</td>
+        <td>{{appointment['appointment_time']}}</td>
+        <td>{{doctor['first_name']}} {{doctor['last_name']}}</td>
+        <td>{{doctor['appointment_cost']}}</td>
+        <td>{{appointment['reason_of_visit']}}</td>
+        <td><button>Cancel</button></td>
+        
+      </tr>
+    </table>
+    </div>  
     {%endif%}
+    {%endif%}
+    
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>
