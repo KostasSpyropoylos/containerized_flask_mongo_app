@@ -124,6 +124,39 @@ def logout():
     return redirect(url_for("login"))
 
 
+# Admin
+@app.route("/admin_panel", methods=["GET", "POST"])
+def admin_panel():
+    if "username" not in session:
+        return redirect(url_for("login"))
+
+    username = session["username"]
+    doctors = list(getDoctors())
+    if request.method == "POST":
+        if "delete" in request.form:
+            row_id = request.form["remove_row"]
+
+            status = removeDoctorByUsername(str(row_id))
+
+            return redirect(url_for("admin_panel"))
+        
+        # new_password = request.form["password"]
+        # # Update the password for the logged-in user
+        # if username and new_password:
+        #     doctor_collection.update_one(
+        #         {"username": username},
+        #         {"$set": {"password": new_password}},
+        #         upsert=True,
+        #     )
+        #     flash("Password updated Successfully!", "success")
+        # else:
+        #     flash("Password is required!", "danger")
+
+    return render_template("admin_panel.html", username=username, len=len(doctors),doctors = doctors)
+
+    # Redirect to login if not logged in
+
+
 # Doctor routing
 @app.route("/change_password", methods=["GET", "POST"])
 def change_password():
@@ -246,18 +279,18 @@ def book_appointment():
             row_id = request.form["row_id"]
 
             appointment_data = getAppointmentById(str(row_id))
-            
+
             if appointment_data:
                 doc_id = appointment_data["doctor_id"]
                 doctor = getDoctorById(doc_id)
-                appointment_data =jsonify(appointment_data)
+                appointment_data = jsonify(appointment_data)
                 return redirect(url_for("book_appointment"))
-            
+
         elif "cancel" in request.form:
             row_id = request.form["remove_row"]
 
             status = removeAppointmentById(str(row_id))
-            
+
             return redirect(url_for("book_appointment"))
 
     return render_template(
@@ -303,7 +336,7 @@ def getDoctors():
         doc["_id"] = str(doc["_id"])  # Convert ObjectId to string
         doctor_list.append(doc)
 
-    return jsonify(doctor_list)
+    return doctor_list
 
 
 @app.route("/specializations", methods=["GET"])
@@ -337,10 +370,15 @@ def getDoctorById(id):
     if doctor:
         return doctor
     else:
-        return (
-            jsonify({"message": "No doctor found with provided id"})
-        )
+        return jsonify({"message": "No doctor found with provided id"})
 
+@app.route("/doctor/<username>", methods=["DELETE"])
+def removeDoctorByUsername(username):
+    doctor_collection.delete_one({"username": str(username)})
+    if doctor_collection.find_one({"username": str(username)}):
+        return ({"message": "didn't delete"}),500
+    else:
+        return ({"message": "deleted"}),200
 
 # Returns list of doctors with certain specialization
 @app.route("/doctors/<specialization>", methods=["GET"])
@@ -358,11 +396,12 @@ def getDoctorBySpecialization(specialization):
 
 
 def removeAppointmentById(id):
-    appointment_collection.delete_one({'_id': ObjectId(id)})
-    if appointment_collection.find_one({'_id': ObjectId(id)}):
+    appointment_collection.delete_one({"_id": ObjectId(id)})
+    if appointment_collection.find_one({"_id": ObjectId(id)}):
         return 500
     else:
         return 200
+
 
 @app.route("/appointment/<id>", methods=["GET"])
 def getAppointmentById(id):
