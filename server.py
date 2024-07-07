@@ -127,34 +127,66 @@ def logout():
 # Admin
 @app.route("/admin_panel", methods=["GET", "POST"])
 def admin_panel():
+    
+    # Redirect to login if not logged in
     if "username" not in session:
         return redirect(url_for("login"))
 
     username = session["username"]
     doctors = list(getDoctors())
+    
+     # Get the data and the status code
+    response, status = getAllSpecializations()
+
+    if status == 200:
+        specializations = response.json
+    else:
+        specializations = []
+    
     if request.method == "POST":
-        if "delete" in request.form:
+        if "delete_doctor" in request.form:
             row_id = request.form["remove_row"]
 
             status = removeDoctorByUsername(str(row_id))
 
             return redirect(url_for("admin_panel"))
         
-        # new_password = request.form["password"]
-        # # Update the password for the logged-in user
-        # if username and new_password:
-        #     doctor_collection.update_one(
-        #         {"username": username},
-        #         {"$set": {"password": new_password}},
-        #         upsert=True,
-        #     )
-        #     flash("Password updated Successfully!", "success")
-        # else:
-        #     flash("Password is required!", "danger")
+        elif "add_doctor" in request.form:
+            
+            first_name = request.form["first_name"]
+            last_name = request.form["last_name"]
+            email = request.form["email"]
+            username = request.form["username"]
+            
+            password = request.form["password"]
+            appointment_cost = request.form["appointment_cost"]
+            specialization = request.form["specialization"]
+            
+            # Checks whether doctor exists 
+            doctor_exists = doctor_collection.find_one({"$or": [{"email": email}, {"username": username}]})
+            if doctor_exists:
+                return jsonify({"message": "A doctor with this username or email already exists"}), 409
+            #If not add doctor to db
+            doctor = {
+            "first_name": first_name,
+            "last_name": last_name,
+            "email": email,
+            "username": username,
+            "password": password,
+            "appointment_cost": appointment_cost,
+            "specialization": specialization.lower()
+            }
 
-    return render_template("admin_panel.html", username=username, len=len(doctors),doctors = doctors)
+            doctor_collection.insert_one(doctor)
+            return redirect(url_for("admin_panel"))
+        
+        #TODO
+        elif "delete_patient" in request.form:
+            pass
 
-    # Redirect to login if not logged in
+    return render_template("admin_panel.html",specializations=specializations, username=username, len=len(doctors),doctors = doctors)
+
+    
 
 
 # Doctor routing
