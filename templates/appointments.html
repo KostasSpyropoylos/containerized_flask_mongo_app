@@ -11,8 +11,8 @@
     />
   </head>
   <body>
-    {%if accessLevel=="doctor"%}
     <p><a href="{{ url_for('home') }}">Back to Home</a></p>
+    {%if accessLevel=="doctor"%}
     {%if len > 0 :%}
     <table style="margin-left: 20px">
       <!-- Table headers -->

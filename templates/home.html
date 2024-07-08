@@ -12,23 +12,19 @@
       <li><a href="{{ url_for('change_password') }}">Change Password</a></li>
       <li><a href="{{ url_for('change_cost') }}">Change Pricing</a></li>
       <li><a href="{{ url_for('appointments') }}">Show Appointments</a></li>
-      <li><a href="{{ url_for('logout') }}">Logout</a></li>
-    </ul>
-    {% elif accessLevel == "admin": %}
-    <h2>Welcome, {{username}}!</h2>
-    <li><a href="{{ url_for('admin_panel') }}">Admin Panel</a></li>
-    <li><a href="{{ url_for('logout') }}">Logout</a></li>
-
-    {% else %}
-    <h2>Welcome, {{username}}!</h2>
-    <h2>{{accessLevel}}!</h2>
-    <ul>
-      <li><a href="{{ url_for('book_appointment') }}">Book Appointment</a></li>
       
+    
+      {% elif accessLevel == "admin": %}
+      <h2>Welcome, {{username}}!</h2>
+      <li><a href="{{ url_for('admin_panel') }}">Admin Panel</a></li>
+
+      {% else %}
+      <h2>Welcome, {{username}}!</h2>
+      <h2>{{accessLevel}}!</h2>
+        <li><a href="{{ url_for('book_appointment') }}">Book Appointment</a></li>
+        
+      {%endif %}
       <li><a href="{{ url_for('logout') }}">Logout</a></li>
     </ul>
-
-    <li><a href="{{ url_for('logout') }}">Logout</a></li>
-    {%endif %}
   </body>
 </html>

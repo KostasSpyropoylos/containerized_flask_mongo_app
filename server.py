@@ -134,6 +134,7 @@ def admin_panel():
 
     username = session["username"]
     doctors = list(getDoctors())
+    patients = list(getPatients())
     
      # Get the data and the status code
     response, status = getAllSpecializations()
@@ -182,9 +183,26 @@ def admin_panel():
         
         #TODO
         elif "delete_patient" in request.form:
-            pass
+            row_id = request.form["remove_patient"]
 
-    return render_template("admin_panel.html",specializations=specializations, username=username, len=len(doctors),doctors = doctors)
+            status = removePatientByUsername(str(row_id))
+
+            return redirect(url_for("admin_panel"))
+            
+
+        elif "update_password" in request.form:
+            username = request.form["username"]
+            
+            password = request.form["password"]
+            
+            message,status = update_password(username,password)
+            if status== 200:
+                flash("Password updated Successfully!", "success")
+            else:
+                flash("Password is required!", "danger")
+
+
+    return render_template("admin_panel.html",specializations=specializations, username=username, len_doc=len(doctors),doctors = doctors, len_pat=len(patients), patients = patients)
 
     
 
@@ -412,6 +430,20 @@ def removeDoctorByUsername(username):
     else:
         return ({"message": "deleted"}),200
 
+
+def update_password(username,password):
+    
+    doctor = doctor_collection.find_one({"username": username})
+    if doctor:
+            # Update the password
+        doctor_collection.update_one(
+            {"username": username},
+            {"$set": {"password": password}}
+        )
+        return jsonify({"message": "Password updated successfully"}), 200
+    else:
+        return jsonify({"message": "Doctor not found"}), 404
+    
 # Returns list of doctors with certain specialization
 @app.route("/doctors/<specialization>", methods=["GET"])
 def getDoctorBySpecialization(specialization):
@@ -470,8 +502,15 @@ def getPatients():
         patient["_id"] = str(patient["_id"])  # Convert ObjectId to string
         patient_list.append(patient)
 
-    return jsonify(patient_list)
+    return patient_list
 
+
+def removePatientByUsername(username):
+    patient_collection.delete_one({"username": str(username)})
+    if patient_collection.find_one({"username": str(username)}):
+        return ({"message": "didn't delete"}),500
+    else:
+        return ({"message": "deleted"}),200
 
 @app.route("/getPatientByEmailAndUsername/", methods=["GET"])
 def getPatientsByEmailAndUsername(email, username):
