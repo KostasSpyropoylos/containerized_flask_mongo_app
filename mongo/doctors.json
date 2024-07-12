@@ -1,0 +1,38 @@
+[
+  {
+    "first_name": "Maria",
+    "last_name": "Papadopoulou",
+    "email": "maria.papadopoulou@example.com",
+    "username": "mariapap",
+    "password": "1234",
+    "appointment_cost": 70,
+    "specialization": "dermatology"
+  },
+  {
+    "first_name": "Nikos",
+    "last_name": "Georgiou",
+    "email": "nikos.georgiou@example.com",
+    "username": "nikosgeo",
+    "password": "1234",
+    "appointment_cost": 80,
+    "specialization": "cardiology"
+  },
+  {
+    "first_name": "Sophia",
+    "last_name": "Kostopoulou",
+    "email": "sophia.kostopoulou@example.com",
+    "username": "sophiakos",
+    "password": "1234",
+    "appointment_cost": 75,
+    "specialization": "neurology"
+  },
+  {
+    "first_name": "Giorgos",
+    "last_name": "Papadopoulos",
+    "email": "gpapad@example.com",
+    "username": "gpapad",
+    "password": "1234",
+    "appointment_cost": 60,
+    "specialization": "orthopedics"
+  }
+]

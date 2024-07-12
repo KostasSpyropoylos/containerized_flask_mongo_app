@@ -1,0 +1,48 @@
+[{
+  "_id": {
+    "$oid": "6683b07eda5e7e48e8128a75"
+  },
+  "first_name": "Giannis",
+  "last_name": "Nikolaou",
+  "email": "giannis.nikolaou@example.com",
+  "amka": "12345678901",
+  "date_of_birth": "1985-05-10",
+  "username": "giannisnik",
+  "password": "1234"
+},
+{
+  "_id": {
+    "$oid": "6683b07eda5e7e48e8128a76"
+  },
+  "first_name": "Sophia",
+  "last_name": "Kostopoulou",
+  "email": "sophia.kostopoulou@example.com",
+  "amka": "10987654321",
+  "date_of_birth": "1978-11-22",
+  "username": "sophiakos",
+  "password": "1234"
+},
+{
+  "_id": {
+    "$oid": "6683b07eda5e7e48e8128a77"
+  },
+  "first_name": "Dimitris",
+  "last_name": "Papageorgiou",
+  "email": "dimitris.papageorgiou@example.com",
+  "amka": "11223344556",
+  "date_of_birth": "1990-03-15",
+  "username": "dimitrispap",
+  "password": "1234"
+},
+{
+  "_id": {
+    "$oid": "668be5e775dbb98cc508d3b4"
+  },
+  "first_name": "Κωνσταντίνος",
+  "last_name": "Σπυρόπουλος",
+  "email": "spyropoyloskonstantinos@gmail.com",
+  "amka": "21070000",
+  "date_of_birth": "2001-06-21",
+  "username": "kostas",
+  "password": "1234"
+}]

@@ -1,0 +1,75 @@
+[{
+  "_id": {
+    "$oid": "66898437471676c7d6fb7b65"
+  },
+  "appointment_date": "2024-07-01",
+  "appointment_time": "09:00",
+  "reason_of_visit": "reason",
+  "patient_id": "6683b502cda26cea9ff023bd",
+  "patient_name": "Κωνσταντίνος Σπυρόπουλος",
+  "doctor_id": {
+    "$oid": "6683d1dada5e7e48e8128a82"
+  },
+  "doctor_last_name": "Papageorgiou",
+  "specialization": "orthopedics"
+},
+{
+  "_id": {
+    "$oid": "66898809471676c7d6fb7b68"
+  },
+  "appointment_date": "2024-07-01",
+  "appointment_time": "16:00",
+  "reason_of_visit": "reason",
+  "patient_id": "6683b502cda26cea9ff023bd",
+  "patient_name": "Κωνσταντίνος Σπυρόπουλος",
+  "doctor_id": {
+    "$oid": "6682e7422153f0c40ab7da58"
+  },
+  "doctor_last_name": "Papadopoulou",
+  "specialization": "dermatology"
+},
+{
+  "_id": {
+    "$oid": "66898814471676c7d6fb7b69"
+  },
+  "appointment_date": "2024-07-01",
+  "appointment_time": "09:00",
+  "reason_of_visit": "reason",
+  "patient_id": "6683b502cda26cea9ff023bd",
+  "patient_name": "Κωνσταντίνος Σπυρόπουλος",
+  "doctor_id": {
+    "$oid": "6683d1dada5e7e48e8128a81"
+  },
+  "doctor_last_name": "Kostopoulou",
+  "specialization": "neurology"
+},
+{
+  "_id": {
+    "$oid": "668be60375dbb98cc508d3b5"
+  },
+  "appointment_date": "2024-07-01",
+  "appointment_time": "09:00",
+  "reason_of_visit": "reason",
+  "patient_id": "668be5e775dbb98cc508d3b4",
+  "patient_name": "Κωνσταντίνος Σπυρόπουλος",
+  "doctor_id": {
+    "$oid": "668a3b114620225ae0186de9"
+  },
+  "doctor_last_name": "Papadopoulou",
+  "specialization": "dermatology"
+},
+{
+  "_id": {
+    "$oid": "668be60975dbb98cc508d3b6"
+  },
+  "appointment_date": "2024-07-01",
+  "appointment_time": "09:00",
+  "reason_of_visit": "reason",
+  "patient_id": "668be5e775dbb98cc508d3b4",
+  "patient_name": "Κωνσταντίνος Σπυρόπουλος",
+  "doctor_id": {
+    "$oid": "668a3b114620225ae0186deb"
+  },
+  "doctor_last_name": "Kostopoulou",
+  "specialization": "neurology"
+}]
