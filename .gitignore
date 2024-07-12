@@ -1,0 +1,11 @@
+# Ignore Python bytecode and cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Other files and directories to ignore
+venv
+node_modules/
+dist/
+*.log
+data
