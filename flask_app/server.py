@@ -99,7 +99,7 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
 
-        if username == "admin" and password == "admin123":
+        if username == "admin" and password == "@dm1n":
             session["username"] = username
             session["accessLevel"] = "admin"
             return redirect(url_for("home"))
