@@ -6,7 +6,7 @@
     "username": "mariapap",
     "password": "1234",
     "appointment_cost": 70,
-    "specialization": "dermatology"
+    "specialization": "Radiologist"
   },
   {
     "first_name": "Nikos",
@@ -15,7 +15,7 @@
     "username": "nikosgeo",
     "password": "1234",
     "appointment_cost": 80,
-    "specialization": "cardiology"
+    "specialization": "Hematologist"
   },
   {
     "first_name": "Sophia",
@@ -24,7 +24,7 @@
     "username": "sophiakos",
     "password": "1234",
     "appointment_cost": 75,
-    "specialization": "neurology"
+    "specialization": "Allergist"
   },
   {
     "first_name": "Giorgos",
@@ -33,6 +33,6 @@
     "username": "gpapad",
     "password": "1234",
     "appointment_cost": 60,
-    "specialization": "orthopedics"
+    "specialization": "Internist"
   }
 ]
